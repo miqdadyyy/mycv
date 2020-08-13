@@ -1,73 +1,70 @@
 <template>
   <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">
-        mycv
-      </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
+    <VueTerminal
+      :intro="welcomeMessage"
+      console-sign="->"
+      allow-arbitrary
+      :full-screen="true"
+      :commands="commands"
+      @command="onCliCommand">
+
+    </VueTerminal>
+
   </div>
 </template>
 
 <script>
-export default {}
+  import VueTerminal from '@/components/VueTerminal';
+
+  export default {
+    components: {
+      VueTerminal
+    },
+    data() {
+      return {
+        welcomeMessage:
+          "Welcome to my blog 🥳 <br>" +
+          "I'm Miqdad Farcha, a backend developer <br>" +
+          "Please type 'help' to know me more 💬",
+        commands: [
+          {
+            name: 'ls',
+            method: function (cmd) {
+              cmd.out = 'Hello world!'
+              return cmd
+            },
+            help: 'A demo command.'
+          }
+        ]
+      }
+    },
+    mounted() {
+      this.commands.push({
+        name: 'lsa',
+        method: function (cmd) {
+          cmd.out = 'Hello world!'
+          return cmd
+        },
+        help: 'A demo command.'
+      })
+    },
+    methods: {
+      onCliCommand(data, resolve, reject) {
+        
+      },
+      printHorizontal(data){
+        let result = '';
+        data.forEach(d => {
+          result += `${d} &nbsp;`
+        })
+        return result;
+      }
+    }
+  }
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
+  .container {
+    height: 100%;
+  }
 </style>
